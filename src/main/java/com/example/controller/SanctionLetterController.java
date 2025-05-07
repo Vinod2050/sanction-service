@@ -2,6 +2,8 @@ package com.example.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ import com.example.service.SanctionLetterService;
 @RestController
 @RequestMapping("/api/sanctions")
 public class SanctionLetterController {
+	private static final Logger logger = LoggerFactory.getLogger(SanctionLetterController.class);
 
 	@Autowired
 	private SanctionLetterService sanctionLetterService;
@@ -28,16 +30,19 @@ public class SanctionLetterController {
 	@PostMapping("/sanctionLetters")
 	private ResponseEntity<SanctionLetter> createSanctionLetter(@RequestBody LoanSanctionDto loanSanctionDto) {
 		SanctionLetter sanctionLetter = sanctionLetterService.createLetter(loanSanctionDto);
+		logger.info("Created sanction letter for loan ");
 		return new ResponseEntity<SanctionLetter>(sanctionLetter, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/sanctionLetters")
 	public List<SanctionLetter> getAllSanctionLetters() {
+		logger.info("Fetching all active sanction letters");
 		return sanctionLetterService.getAllActiveSanctionLetters();
 	}
 
 	@GetMapping("/sanctionLetter/{id}")
 	public ResponseEntity<SanctionLetter> getSanctionLetterById(@PathVariable Integer id) {
+		logger.info("Fetching sanction letter by ID:", id);
 		SanctionLetter letter = sanctionLetterService.getSanctionLetterById(id);
 		if (letter != null) {
 			return new ResponseEntity<>(letter, HttpStatus.OK);
@@ -49,6 +54,7 @@ public class SanctionLetterController {
 	@PatchMapping("/sanctionLetters/{id}")
 	public ResponseEntity<SanctionLetter> updateSanctionLetter(@PathVariable Integer id,
 			@RequestBody SanctionLetter updateData) {
+		logger.info("Updating sanction letter with ID: ", id);
 
 		SanctionLetter updated = sanctionLetterService.updateSanctionLetter(id, updateData);
 
