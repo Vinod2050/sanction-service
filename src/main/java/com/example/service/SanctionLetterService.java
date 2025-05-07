@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.dto.LoanSanctionDto;
 import com.example.entity.SanctionLetter;
-import com.example.enums.SanctionStatus;
 
 public interface SanctionLetterService {
 
