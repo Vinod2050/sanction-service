@@ -23,9 +23,10 @@ public class SanctionLetter {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer sanctionId;
+	private Integer customerId;
 	private String firstName;
 	private String lastName;
-	private Long contactNumber;
+	private String customerEmail;
 	private String intrestType;
 	private Float intrestRate;
 	private Double EMIAmount;
@@ -36,6 +37,9 @@ public class SanctionLetter {
 	@Enumerated(EnumType.STRING)
 	private SanctionStatus sanctionStatus;
 	private Integer tenure;
+	private Boolean isProcessingFeesPaid;
+	private Boolean isSanctionLetterAccepted;
+	private Boolean isMailSent;
     
 
 }

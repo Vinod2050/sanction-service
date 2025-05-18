@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.example.dto.LoanSanctionDto;
 import com.example.entity.SanctionLetter;
@@ -28,8 +31,9 @@ public class SanctionLetterController {
 	private SanctionLetterService sanctionLetterService;
 
 	@PostMapping("/sanctionLetters")
-	private ResponseEntity<SanctionLetter> createSanctionLetter(@RequestBody LoanSanctionDto loanSanctionDto) {
+	private ResponseEntity<SanctionLetter> createSanctionLetter(@RequestBody LoanSanctionDto loanSanctionDto) throws IOException {
 		SanctionLetter sanctionLetter = sanctionLetterService.createLetter(loanSanctionDto);
+
 		logger.info("Created sanction letter for loan ");
 		return new ResponseEntity<SanctionLetter>(sanctionLetter, HttpStatus.CREATED);
 	}
@@ -51,18 +55,23 @@ public class SanctionLetterController {
 		}
 	}
 
-	@PatchMapping("/sanctionLetters/{id}")
-	public ResponseEntity<SanctionLetter> updateSanctionLetter(@PathVariable Integer id,
-			@RequestBody SanctionLetter updateData) {
-		logger.info("Updating sanction letter with ID: ", id);
+//	@PatchMapping("/sanctionLetters/{customerId}")
+//	public ResponseEntity<LoanSanctionDto> updateSanctionLetter(@PathVariable Integer customerId,
+//	        @RequestBody LoanSanctionDto updateData) {
+//	    logger.info("Updating sanction letter with ID: {}", customerId);
+//	    LoanSanctionDto updated = sanctionLetterService.updateSanctionLetter(customerId, updateData);
+//	    return updated != null ? new ResponseEntity<LoanSanctionDto>(updated, HttpStatus.OK)
+//	                           : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//	}
 
-		SanctionLetter updated = sanctionLetterService.updateSanctionLetter(id, updateData);
-
-		if (updated != null) {
-			return new ResponseEntity<SanctionLetter>(updated, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<SanctionLetter>(HttpStatus.NOT_FOUND);
-		}
+	@PatchMapping("/disbursement/{customerId}")
+	public ResponseEntity<String> startDisbursement(
+	        @RequestParam Boolean isProcessingFeesPaid,
+	        @RequestParam Boolean isSanctionLetterAccepted,
+	        @PathVariable Integer customerId) {
+	    logger.info("Starting disbursement for customer ID: {}", customerId);
+	    String msg = sanctionLetterService.startDisbursement(isProcessingFeesPaid, isSanctionLetterAccepted, customerId);
+	    return new ResponseEntity<>(msg, HttpStatus.OK);
 	}
 
 }

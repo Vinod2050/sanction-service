@@ -13,6 +13,7 @@ public class LoanSanctionDto {
 	private Integer customerId;
 	private String firstName;
 	private String lastName;
+	private String customerEmail;
 	@Enumerated(EnumType.STRING)
 	private String loanType;
 	private Double requestedLoanAmount;
@@ -21,6 +22,7 @@ public class LoanSanctionDto {
 	private Integer requestedTenure;
 	private Integer cibilScore;
 	private Double monthlyIncome;
-
+	
+	
 
 }

@@ -1,6 +1,7 @@
 package com.example.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +13,7 @@ public interface SanctionLetterRepository extends JpaRepository<SanctionLetter, 
 
 
 	List<SanctionLetter> findBySanctionStatus(SanctionStatus sanctionStatus);
+
+	Optional<SanctionLetter> findByCustomerId(Integer customerId);
 
 }
